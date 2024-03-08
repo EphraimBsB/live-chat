@@ -13,6 +13,20 @@ return new class extends Migration
     {
         Schema::create('messages', function (Blueprint $table) {
             $table->id();
+            $table->foreignId('conversation_id')->constrained();
+
+            $table->unsignedBigInteger('sender_id');
+            $table->foreign('sender_id')->references('id')->on('users');
+
+            $table->unsignedBigInteger('receiver_id');
+            $table->foreign('receiver_id')->references('id')->on('users');
+
+            $table->timestamp('read_at')->nullable();
+
+            // delete actions
+            $table->timestamp('receiver_deleted_at')->nullable();
+            $table->timestamp('sender_deleted_at')->nullable();
+
             $table->timestamps();
         });
     }
